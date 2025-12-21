@@ -1,5 +1,5 @@
 import { db, TABLE_NAME } from "./dynamodb";
-import { PutCommand, GetCommand } from "@aws-sdk/lib-dynamodb";
+import { PutCommand, GetCommand,QueryCommand } from "@aws-sdk/lib-dynamodb";
 
 export interface UserProfile {
   username: string;
