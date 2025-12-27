@@ -1,17 +1,19 @@
 "use server";
-import { getBalance } from "@/lib/ledger";
+import { getBalance,getHistory } from "@/lib/ledger";
 import { transferFunds } from "@/lib/transaction";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { transactionState } from "./types";
 
 export async function getUserData(username: string) {
-  const data = await getBalance(username);
-  if (data === null) return null;
+  const [balanceData,historyData] = await Promise.all([getBalance(username),getHistory(username)]);
+  if (balanceData === null) return null;
   return {
-    name: data.Name,
-    balance: (data.Balance / 100).toFixed(2),
+    name: balanceData.Name,
+    balance: (balanceData.Balance / 100).toFixed(2),
     username: username,
+    transactions:historyData.transactions,
+    lastKey:historyData.lastKey
   };
 }
 
@@ -42,4 +44,8 @@ export async function transferAction(prevState:transactionState, formData: FormD
     }
     return {  success: false,message:"System Error: Transaction failed",error: "System Error: Transaction failed" };
   }
+}
+
+export async function  loadMoreTransactions(username:string,lastKey:any) {
+  return await getHistory(username,10,lastKey);
 }
