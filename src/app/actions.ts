@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { transactionState } from "./types";
 import { auth } from "@/auth";
+import { version } from "os";
 
 export async function getUserData(username: string) {
   const [balanceData, historyData] = await Promise.all([
@@ -16,6 +17,7 @@ export async function getUserData(username: string) {
     name: balanceData.Name,
     balance: (balanceData.Balance / 100).toFixed(2),
     username: username,
+    version:balanceData.Version,
     transactions: historyData.transactions,
     lastKey: historyData.lastKey,
   };
@@ -42,6 +44,7 @@ export async function transferAction(
   const amountRaw = formData.get("amount") as string;
   const decimalAmount = parseFloat(amountRaw);
   const amountInpaise = Math.round(decimalAmount * 100);
+  const currentVersion=parseInt(formData.get("version") as string);
   if (!fromUser || !toUser || !amountInpaise || amountInpaise <= 0) {
     return {
       success: false,
@@ -54,6 +57,7 @@ export async function transferAction(
       fromUser,
       toUser,
       amount: amountInpaise,
+    currentVersion
     });
     revalidatePath("/dashboard");
     return {

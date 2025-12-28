@@ -7,11 +7,13 @@ export const transferFunds = async ({
   toUser,
   amount,
   currency = "INR",
+  currentVersion
 }: {
   fromUser: string;
   toUser: string;
   amount: number;
   currency?: string;
+  currentVersion:number
 }) => {
   const transctionId = uuidv4();
   const timestamp = new Date().toISOString();
@@ -27,10 +29,11 @@ export const transferFunds = async ({
             Key: { PK: `ACCT#${fromUser}`, SK: "METADATA" },
             UpdateExpression:
               "SET Balance = Balance - :amount, Version = Version + :inc",
-            ConditionExpression: "Balance >= :amount",
+            ConditionExpression: "Balance >= :amount AND Version = :currVer",
             ExpressionAttributeValues: {
               ":amount": amount,
               ":inc": 1,
+              ":currVer":currentVersion
             },
           },
         },

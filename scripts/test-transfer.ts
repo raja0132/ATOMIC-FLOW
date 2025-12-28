@@ -3,9 +3,11 @@ import { getBalance } from "@/lib/ledger";
 
 const main = async () => {
     console.log("before transfer funds");
-    console.log("Alice" ,await getBalance("Alice"));
-    console.log("Bob" ,await getBalance("Bob"));
-
+    const aliceData=await getBalance("Alice");
+    const bobData=await getBalance("Bob");
+    console.log("Alice" ,aliceData);
+    console.log("Bob" ,bobData);
+     
     console.log("sending 50 INR to alice to bob");
     try
     {
@@ -13,7 +15,8 @@ const main = async () => {
             {
                 fromUser:"Alice",
                 toUser:"Bob",
-                amount:500
+                amount:500,
+                currentVersion:aliceData?.Version
             }
         );
     }
@@ -24,6 +27,6 @@ const main = async () => {
     console.log("After transfer funds");
     console.log("Alice" ,await getBalance("Alice"));
     console.log("Bob" ,await getBalance("Bob"));
-
+    
 };
 main();

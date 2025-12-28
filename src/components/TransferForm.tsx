@@ -4,13 +4,14 @@ import { transferAction } from "@/app/actions";
 import { useEffect, useRef } from "react";
 import {transactionState} from "@/app/types";
 import { useActionState } from "react";
+import { version } from "os";
 const initialState : transactionState= {
   success: false,
   message: "",
   error:null
 };
 
-export default function TransferForm({ currentUser }: { currentUser: string }) {
+export default function TransferForm({ currentUser ,currentVersion}: { currentUser: string,currentVersion:string}) {
   const [state, formAction,isPending] = useActionState(transferAction, initialState);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -26,7 +27,7 @@ export default function TransferForm({ currentUser }: { currentUser: string }) {
       
       <form ref={formRef} action={formAction} className="space-y-4">
         <input type="hidden" name="fromUser" value={currentUser} />
-        
+        <input type="hidden" name="version" value={currentVersion} />
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="text-xs text-gray-400">Recipient ID</label>

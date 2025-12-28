@@ -5,12 +5,12 @@ const main = async () => {
     await createUser({
       username: "Alice",
       name: "Alice0132",
-      intialBalance: 1000,
+      intialBalance: 100000,
     });
     await createUser({
       username: "Bob",
       name: "Bob123",
-      intialBalance: 500,
+      intialBalance: 50000,
     });
     console.log("Database seeded successfully");
   } catch (error) {

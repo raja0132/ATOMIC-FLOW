@@ -45,7 +45,7 @@ export default async function Dashboard() {
         </div>
 
         {/* Action Form */}
-        <TransferForm currentUser={user.username} />
+        <TransferForm currentUser={user.username} currentVersion={user.version}/>
 
         {/* TransactionList */}
         <div className="mt-8">
