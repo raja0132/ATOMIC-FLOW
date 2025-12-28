@@ -3,17 +3,13 @@ import TransferForm from "@/components/TransferForm";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import TransactionList from "@/components/TransactionList";
+import { auth } from "@/auth";
 
-export default async function Dashboard({
-  searchParams,
-}: {
-  searchParams: Promise<{ user?: string }>;
-}) {
-  const params = await searchParams;
-  const username = params.user;
-  if (!username) redirect("/");
-
-  const user = await getUserData(username);
+export default async function Dashboard() {
+  const session = await auth();
+  if (!session?.user?.email) redirect("/");
+  const username = session.user.email;
+  const user = await getUserData(username as string);
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center text-white">
