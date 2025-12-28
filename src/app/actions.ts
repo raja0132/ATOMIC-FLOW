@@ -45,6 +45,7 @@ export async function transferAction(
   const decimalAmount = parseFloat(amountRaw);
   const amountInpaise = Math.round(decimalAmount * 100);
   const currentVersion=parseInt(formData.get("version") as string);
+  const idempotencyKey=formData.get("idempotencyKey") as string
   if (!fromUser || !toUser || !amountInpaise || amountInpaise <= 0) {
     return {
       success: false,
@@ -57,7 +58,8 @@ export async function transferAction(
       fromUser,
       toUser,
       amount: amountInpaise,
-    currentVersion
+    currentVersion,
+    idempotencyKey
     });
     revalidatePath("/dashboard");
     return {

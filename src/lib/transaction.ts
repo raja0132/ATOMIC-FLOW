@@ -7,13 +7,15 @@ export const transferFunds = async ({
   toUser,
   amount,
   currency = "INR",
-  currentVersion
+  currentVersion,
+  idempotencyKey
 }: {
   fromUser: string;
   toUser: string;
   amount: number;
   currency?: string;
   currentVersion:number
+  idempotencyKey:string
 }) => {
   const transctionId = uuidv4();
   const timestamp = new Date().toISOString();
@@ -82,6 +84,18 @@ export const transferFunds = async ({
             },
           },
         },
+        {
+          Put:{
+            TableName:TABLE_NAME,
+            Item:{
+              PK:`IDEM#${idempotencyKey}`,
+              SK:"METADATA",
+              CreatedAt:new Date().toISOString(),
+              TTL:Math.floor(Date.now()/1000)+86400,
+            },
+            ConditionExpression:"attribute_not_exists(PK)"
+          }
+        }
       ],
     });
     await db.send(command);
@@ -90,6 +104,10 @@ export const transferFunds = async ({
   } catch (error: any) {
     if (error.name === "TransactionCanceledException") {
       const reasons = error.CancellationReasons;
+      if (reasons[4]?.Code === "ConditionalCheckFailed") {
+         console.warn(`Idempotency Hit: Key ${idempotencyKey} already used.`);
+         throw new Error("IDEMPOTENCY_HIT"); 
+      }
       if (reasons[0].Code === "ConditionalCheckFailed") {
         console.log(`Transfer Failed :${fromUser} has insufficient funds.`);
         throw new Error("INSUFFICIENT_FUNDS");

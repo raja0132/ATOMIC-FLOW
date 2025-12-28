@@ -1,7 +1,7 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
-const isLocal = process.env.NEXT_PUBLIC_IS_LOCAL || true;
+const isLocal = process.env.NEXT_PUBLIC_IS_LOCAL;
 const config = {
   region: "us-east-1",
   endpoint: isLocal ? "http://localhost:8000" : undefined,
