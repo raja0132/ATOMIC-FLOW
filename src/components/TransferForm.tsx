@@ -23,13 +23,13 @@ export default function TransferForm({
     initialState
   );
   const formRef = useRef<HTMLFormElement>(null);
-  const [idempotencyKey, setidempotencyKey] = useState(uuidv4());
+  const [idempotencyKey, setIdempotencyKey] = useState(uuidv4());
   useEffect(() => {
     if (state?.success) {
       formRef.current?.reset();
-      setidempotencyKey(uuidv4());
+      setIdempotencyKey(uuidv4());
     }
-  }, [state?.success]);
+  }, [state]);
 
   return (
     <div className="bg-gray-800 p-6 rounded-xl shadow-lg mt-6">
