@@ -1,19 +1,12 @@
+import "dotenv/config"
 import {
   DynamoDBClient,
   UpdateTimeToLiveCommand,
 } from "@aws-sdk/client-dynamodb";
 
-const isLocal = true;
-const config = {
-  region: "us-east-1",
-  endpoint: isLocal ? "http://localhost:8000" : undefined,
-  credentials: {
-    accessKeyId: "fake",
-    secretAccessKey: "fake",
-  },
-};
-
-const client = new DynamoDBClient(config);
+const client = new DynamoDBClient({
+  region: process.env.AWS_REGION || "us-east-1",
+});
 
 const enableTTL = async () => {
   const command = new UpdateTimeToLiveCommand({

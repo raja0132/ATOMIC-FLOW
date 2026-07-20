@@ -1,3 +1,4 @@
+import "dotenv/config"
 import {
   DynamoDBClient,
   CreateTableCommand,
@@ -5,12 +6,7 @@ import {
 } from "@aws-sdk/client-dynamodb";
 
 const client = new DynamoDBClient({
-  region: "us-east-1",
-  endpoint: "http://localhost:8000",
-  credentials: {
-    accessKeyId: "fake",
-    secretAccessKey: "fake",
-  },
+  region: process.env.AWS_REGION || "us-east-1",
 });
 const TABLE_NAME = "Ledger";
 const setup = async () => {
