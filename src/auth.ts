@@ -3,6 +3,7 @@ import Google from "next-auth/providers/google";
 import { getBalance,createUser } from "./lib/ledger";
 
 export const {handlers,signIn,signOut,auth}=NextAuth({
+    trustHost : true,
     providers:[Google],
     callbacks:{
         async signIn({user}) {
