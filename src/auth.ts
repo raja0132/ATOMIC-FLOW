@@ -2,9 +2,20 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import { getBalance,createUser } from "./lib/ledger";
 
+console.log("========== ENV CHECK ==========");
+console.log("AUTH_SECRET:", process.env.AUTH_SECRET ? "FOUND" : "MISSING");
+console.log("AUTH_GOOGLE_ID:", process.env.AUTH_GOOGLE_ID ? "FOUND" : "MISSING");
+console.log("AUTH_GOOGLE_SECRET:", process.env.AUTH_GOOGLE_SECRET ? "FOUND" : "MISSING");
+console.log(
+  "AUTH variables:",
+  Object.keys(process.env).filter((k) => k.startsWith("AUTH"))
+);
+console.log("===============================");
+
+
 export const {handlers,signIn,signOut,auth}=NextAuth({
     trustHost : true,
-      secret: process.env.AUTH_SECRET,
+    // secret: process.env.AUTH_SECRET,
     providers: [
         Google({
             clientId: process.env.AUTH_GOOGLE_ID!,
