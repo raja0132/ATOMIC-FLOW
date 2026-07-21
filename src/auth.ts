@@ -4,7 +4,13 @@ import { getBalance,createUser } from "./lib/ledger";
 
 export const {handlers,signIn,signOut,auth}=NextAuth({
     trustHost : true,
-    providers:[Google],
+      secret: process.env.AUTH_SECRET,
+    providers: [
+        Google({
+            clientId: process.env.AUTH_GOOGLE_ID!,
+            clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+        }),
+    ],
     callbacks:{
         async signIn({user}) {
             if(!user.email) return false;
