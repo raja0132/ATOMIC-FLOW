@@ -3,7 +3,7 @@ import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
 
 // const isLocal = process.env.NEXT_PUBLIC_IS_LOCAL || true;
 const config = {
-  region: process.env.AWS_REGION || "us-east-1",
+  // region: process.env.AWS_REGION,
 };
 
 const client = new DynamoDBClient(config);

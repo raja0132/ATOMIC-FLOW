@@ -6,7 +6,7 @@ import {
 } from "@aws-sdk/client-dynamodb";
 
 const client = new DynamoDBClient({
-  region: process.env.AWS_REGION || "us-east-1",
+  // region: process.env.AWS_REGION || "us-east-1",
 });
 const TABLE_NAME = "Ledger";
 const setup = async () => {
