@@ -4,9 +4,15 @@ import { getBalance } from "@/lib/ledger";
 
 export async function POST(req: NextRequest) {
   const secret = req.headers.get("x-admin-secret");
-  
   if (secret != process.env.STRESS_TEST_SECRET) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      {
+        error: "Unauthorized",
+        received_from_k6: secret || "null",
+        server_env_variable: process.env.STRESS_TEST_SECRET || "undefined",
+      },
+      { status: 401 },
+    );
   }
 
   try {
@@ -31,15 +37,14 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(result);
-
   } catch (error: any) {
     if (error.name === "TransactionCanceledException") {
       return NextResponse.json(
         { error: "Transaction Blocked by Concurrency Control" },
-        { status: 409 }
+        { status: 409 },
       );
     }
-    
+
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
