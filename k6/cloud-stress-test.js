@@ -3,8 +3,8 @@ import { check } from 'k6';
 import { uuidv4 } from 'https://jslib.k6.io/k6-utils/1.4.0/index.js';
 
 // ⚠️ CHANGE THIS to your live Amplify URL
-const BASE_URL='https://main.d38465pe8k3hwb.amplifyapp.com/api/stress-test';
-const SECRET="UQB/lK5fO0/oFPN471XFanjsP8kcbEVONoGyCMBGy58=";
+const BASE_URL='';
+const SECRET='';
 
 export const options = {
   scenarios: {

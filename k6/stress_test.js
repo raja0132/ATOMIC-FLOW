@@ -3,8 +3,8 @@ import {check,sleep} from 'k6';
 import {uuidv4} from 'https://jslib.k6.io/k6-utils/1.4.0/index.js'
 // import { version } from 'os';
 
-const BASE_URL='http://localhost:3000/api/stress-test';
-const SECRET="UQB/lK5fO0/oFPN471XFanjsP8kcbEVONoGyCMBGy58=";
+const BASE_URL='';
+const SECRET="";
 
 export const options={
     scenarios:
